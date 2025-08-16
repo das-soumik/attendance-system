@@ -11,7 +11,7 @@ $stmt = $pdo->prepare("SELECT * FROM faculty WHERE username = ?");
 $stmt->execute([$username]);
 $faculty = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if ($faculty && hash('sha256', $password) === $faculty['password_hash']) {
+if ($faculty && password_verify($password, $faculty['password_hash'])) {
     echo json_encode(["status" => "success", "faculty_id" => $faculty['faculty_id'], "name" => $faculty['name']]);
 } else {
     echo json_encode(["status" => "error", "message" => "Invalid login"]);
